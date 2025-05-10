@@ -45,10 +45,21 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario buscarYActualizar(Long id, Usuario usuario) {
-        if (!usuarioRepository.findById(id).isPresent()) {
-            throw new RuntimeException("Usuario no encontrado con ID: " + id);
+        Usuario existingUsuario = usuarioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+
+        // Update the existing user with the provided data
+        if (usuario.getNombre() != null) {
+            existingUsuario.setNombre(usuario.getNombre());
         }
-        usuario.setId(id);
-        return usuarioRepository.save(usuario);
+        if (usuario.getEmail() != null) {
+            existingUsuario.setEmail(usuario.getEmail());
+        }
+        if (usuario.getEstado() != null) {
+            existingUsuario.setEstado(usuario.getEstado());
+        }
+
+        // Save the updated user
+        return usuarioRepository.save(existingUsuario);
     }
 }
