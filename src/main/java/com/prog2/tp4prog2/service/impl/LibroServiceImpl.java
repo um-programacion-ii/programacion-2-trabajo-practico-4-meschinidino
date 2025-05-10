@@ -23,6 +23,12 @@ public class LibroServiceImpl implements LibroService {
     }
 
     @Override
+    public Libro buscarPorId(Long id) {
+        return libroRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Libro no encontrado con ID: " + id));
+    }
+
+    @Override
     public List<Libro> obtenerTodos() {
         return libroRepository.findAll();
     }
@@ -38,7 +44,7 @@ public class LibroServiceImpl implements LibroService {
     }
 
     @Override
-    public Libro actualizar(Long id, Libro libro) {
+    public Libro buscarYActualizar(Long id, Libro libro) {
         if (!libroRepository.findById(id).isPresent()) {
             throw new RuntimeException("Libro no encontrado con ID: " + id);
         }

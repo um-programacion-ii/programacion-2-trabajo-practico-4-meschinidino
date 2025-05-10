@@ -14,6 +14,12 @@ public interface UsuarioService {
     Usuario buscarPorEmail(String email);
 
     /**
+     * @param id ID a buscar
+     * @return usuario con ID coincidente
+     */
+    Usuario buscarPorId(Long id);
+
+    /**
      * @return lista de todos los usuarios
      */
     List<Usuario> obtenerTodos();
@@ -30,9 +36,9 @@ public interface UsuarioService {
     void eliminar(Long id);
 
     /**
-     * @param id identificador del usuario a actualizar
+     * @param id identificador del usuario a buscar y actualizar
      * @param usuario datos actualizados del usuario
      * @return usuario actualizado
      */
-    Usuario actualizar(Long id, Usuario usuario);
+    Usuario buscarYActualizar(Long id, Usuario usuario);
 }

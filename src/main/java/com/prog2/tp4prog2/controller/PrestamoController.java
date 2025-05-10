@@ -45,7 +45,7 @@ public class PrestamoController {
     @GetMapping("/usuario/{usuarioId}")
     public ResponseEntity<List<Prestamo>> obtenerPrestamosPorUsuario(@PathVariable Long usuarioId) {
         try {
-            Usuario usuario = usuarioService.actualizar(usuarioId, new Usuario(usuarioId, null, null, null));
+            Usuario usuario = usuarioService.buscarPorId(usuarioId);
             return ResponseEntity.ok(prestamoService.buscarPorUsuario(usuario));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
@@ -55,7 +55,7 @@ public class PrestamoController {
     @GetMapping("/libro/{libroId}")
     public ResponseEntity<List<Prestamo>> obtenerPrestamosPorLibro(@PathVariable Long libroId) {
         try {
-            Libro libro = libroService.actualizar(libroId, new Libro(libroId, null, null, null, null));
+            Libro libro = libroService.buscarPorId(libroId);
             return ResponseEntity.ok(prestamoService.buscarPorLibro(libro));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
@@ -71,7 +71,7 @@ public class PrestamoController {
     @PutMapping("/{id}")
     public ResponseEntity<Prestamo> actualizar(@PathVariable Long id, @RequestBody Prestamo prestamo) {
         try {
-            Prestamo prestamoActualizado = prestamoService.actualizar(id, prestamo);
+            Prestamo prestamoActualizado = prestamoService.buscarYActualizar(id, prestamo);
             return ResponseEntity.ok(prestamoActualizado);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();

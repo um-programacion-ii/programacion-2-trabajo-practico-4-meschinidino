@@ -23,6 +23,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    public Usuario buscarPorId(Long id) {
+        return usuarioRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+    }
+
+    @Override
     public List<Usuario> obtenerTodos() {
         return usuarioRepository.findAll();
     }
@@ -38,7 +44,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Usuario actualizar(Long id, Usuario usuario) {
+    public Usuario buscarYActualizar(Long id, Usuario usuario) {
         if (!usuarioRepository.findById(id).isPresent()) {
             throw new RuntimeException("Usuario no encontrado con ID: " + id);
         }

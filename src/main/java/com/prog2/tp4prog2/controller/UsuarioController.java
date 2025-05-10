@@ -27,8 +27,7 @@ public class UsuarioController {
     @GetMapping("/{id}")
     public ResponseEntity<Usuario> obtenerPorId(@PathVariable Long id) {
         try {
-            // Usamos actualizar para obtener el usuario por ID
-            Usuario usuario = usuarioService.actualizar(id, new Usuario(id, null, null, null));
+            Usuario usuario = usuarioService.buscarPorId(id);
             return ResponseEntity.ok(usuario);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
@@ -54,7 +53,7 @@ public class UsuarioController {
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> actualizar(@PathVariable Long id, @RequestBody Usuario usuario) {
         try {
-            Usuario usuarioActualizado = usuarioService.actualizar(id, usuario);
+            Usuario usuarioActualizado = usuarioService.buscarYActualizar(id, usuario);
             return ResponseEntity.ok(usuarioActualizado);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();

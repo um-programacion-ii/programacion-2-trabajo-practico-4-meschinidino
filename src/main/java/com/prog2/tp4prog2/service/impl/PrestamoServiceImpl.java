@@ -20,6 +20,12 @@ public class PrestamoServiceImpl implements PrestamoService {
     }
 
     @Override
+    public Prestamo buscarPorId(Long id) {
+        return prestamoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Prestamo no encontrado con ID: " + id));
+    }
+
+    @Override
     public List<Prestamo> obtenerTodos() {
         return prestamoRepository.findAll();
     }
@@ -55,7 +61,7 @@ public class PrestamoServiceImpl implements PrestamoService {
     }
 
     @Override
-    public Prestamo actualizar(Long id, Prestamo prestamo) {
+    public Prestamo buscarYActualizar(Long id, Prestamo prestamo) {
         if (!prestamoRepository.findById(id).isPresent()) {
             throw new RuntimeException("Prestamo no encontrado con ID: " + id);
         }
