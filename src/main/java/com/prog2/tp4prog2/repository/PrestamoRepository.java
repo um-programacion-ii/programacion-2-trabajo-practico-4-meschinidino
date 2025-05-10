@@ -7,74 +7,61 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Repository interface for Prestamo entity
- */
 public interface PrestamoRepository {
-    
+
     /**
-     * Find all loans
-     * @return list of all loans
+     * @return lista de todos los préstamos
      */
     List<Prestamo> findAll();
-    
+
     /**
-     * Find a loan by its ID
-     * @param id the loan ID
-     * @return the loan if found
+     * @param id identificador del préstamo
+     * @return el préstamo si se encuentra
      */
     Optional<Prestamo> findById(Long id);
-    
+
     /**
-     * Save a loan
-     * @param prestamo the loan to save
-     * @return the saved loan
+     * @param prestamo el préstamo a guardar
+     * @return el préstamo guardado
      */
     Prestamo save(Prestamo prestamo);
-    
+
     /**
-     * Delete a loan
-     * @param id the ID of the loan to delete
+     * @param id identificador del préstamo a eliminar
      */
     void deleteById(Long id);
-    
+
     /**
-     * Find loans by user
-     * @param usuario the user to search for
-     * @return list of loans for the specified user
+     * @param usuario usuario a buscar
+     * @return lista de préstamos del usuario
      */
     List<Prestamo> findByUsuario(Usuario usuario);
-    
+
     /**
-     * Find loans by book
-     * @param libro the book to search for
-     * @return list of loans for the specified book
+     * @param libro libro a buscar
+     * @return lista de préstamos del libro
      */
     List<Prestamo> findByLibro(Libro libro);
-    
+
     /**
-     * Find loans by loan date
-     * @param fechaPrestamo the loan date to search for
-     * @return list of loans with matching loan date
+     * @param fechaPrestamo fecha de préstamo a buscar
+     * @return lista de préstamos con la fecha indicada
      */
     List<Prestamo> findByFechaPrestamo(LocalDate fechaPrestamo);
-    
+
     /**
-     * Find loans by return date
-     * @param fechaDevolucion the return date to search for
-     * @return list of loans with matching return date
+     * @param fechaDevolucion fecha de devolución a buscar
+     * @return lista de préstamos con la fecha de devolución indicada
      */
     List<Prestamo> findByFechaDevolucion(LocalDate fechaDevolucion);
-    
+
     /**
-     * Find active loans (loans where the return date is after the current date)
-     * @return list of active loans
+     * @return lista de préstamos activos (fecha de devolución posterior a hoy)
      */
     List<Prestamo> findActivePrestamos();
-    
+
     /**
-     * Find overdue loans (loans where the return date is before the current date)
-     * @return list of overdue loans
+     * @return lista de préstamos vencidos (fecha de devolución anterior a hoy)
      */
     List<Prestamo> findOverduePrestamos();
 }

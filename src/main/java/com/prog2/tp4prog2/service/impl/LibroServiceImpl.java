@@ -7,17 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-/**
- * Implementation of LibroService
- */
 @Service
 public class LibroServiceImpl implements LibroService {
     private final LibroRepository libroRepository;
 
-    /**
-     * Constructor with dependency injection
-     * @param libroRepository the repository to use
-     */
     @Autowired
     public LibroServiceImpl(LibroRepository libroRepository) {
         this.libroRepository = libroRepository;

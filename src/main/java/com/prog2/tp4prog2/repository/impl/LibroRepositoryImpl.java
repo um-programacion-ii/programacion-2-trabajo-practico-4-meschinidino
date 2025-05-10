@@ -11,23 +11,23 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Implementation of LibroRepository using in-memory storage
+ * Implementación en memoria del repositorio de libros
  */
 @Repository
 public class LibroRepositoryImpl implements LibroRepository {
     private final Map<Long, Libro> libros = new HashMap<>();
     private Long nextId = 1L;
-    
+
     @Override
     public List<Libro> findAll() {
         return new ArrayList<>(libros.values());
     }
-    
+
     @Override
     public Optional<Libro> findById(Long id) {
         return Optional.ofNullable(libros.get(id));
     }
-    
+
     @Override
     public Libro save(Libro libro) {
         if (libro.getId() == null) {
@@ -36,26 +36,26 @@ public class LibroRepositoryImpl implements LibroRepository {
         libros.put(libro.getId(), libro);
         return libro;
     }
-    
+
     @Override
     public void deleteById(Long id) {
         libros.remove(id);
     }
-    
+
     @Override
     public List<Libro> findByTitulo(String titulo) {
         return libros.values().stream()
             .filter(libro -> libro.getTitulo().contains(titulo))
             .collect(Collectors.toList());
     }
-    
+
     @Override
     public List<Libro> findByAutor(String autor) {
         return libros.values().stream()
             .filter(libro -> libro.getAutor().contains(autor))
             .collect(Collectors.toList());
     }
-    
+
     @Override
     public Optional<Libro> findByIsbn(String isbn) {
         return libros.values().stream()

@@ -4,55 +4,45 @@ import com.prog2.tp4prog2.model.Libro;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Repository interface for Libro entity
- */
 public interface LibroRepository {
-    
+
     /**
-     * Find all books
-     * @return list of all books
+     * @return lista de todos los libros
      */
     List<Libro> findAll();
-    
+
     /**
-     * Find a book by its ID
-     * @param id the book ID
-     * @return the book if found
+     * @param id identificador del libro
+     * @return el libro si se encuentra
      */
     Optional<Libro> findById(Long id);
-    
+
     /**
-     * Save a book
-     * @param libro the book to save
-     * @return the saved book
+     * @param libro el libro a guardar
+     * @return el libro guardado
      */
     Libro save(Libro libro);
-    
+
     /**
-     * Delete a book
-     * @param id the ID of the book to delete
+     * @param id identificador del libro a eliminar
      */
     void deleteById(Long id);
-    
+
     /**
-     * Find books by title
-     * @param titulo the title to search for
-     * @return list of books with matching title
+     * @param titulo título a buscar
+     * @return lista de libros con título coincidente
      */
     List<Libro> findByTitulo(String titulo);
-    
+
     /**
-     * Find books by author
-     * @param autor the author to search for
-     * @return list of books with matching author
+     * @param autor autor a buscar
+     * @return lista de libros del autor
      */
     List<Libro> findByAutor(String autor);
-    
+
     /**
-     * Find books by ISBN
-     * @param isbn the ISBN to search for
-     * @return the book with matching ISBN
+     * @param isbn ISBN a buscar
+     * @return libro con el ISBN correspondiente
      */
     Optional<Libro> findByIsbn(String isbn);
 }

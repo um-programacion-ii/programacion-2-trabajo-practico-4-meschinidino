@@ -4,40 +4,35 @@ import com.prog2.tp4prog2.model.Usuario;
 import java.util.List;
 
 /**
- * Service interface for Usuario entity
+ * Interfaz de servicio para la entidad Usuario
  */
 public interface UsuarioService {
     /**
-     * Find a user by email
-     * @param email the email to search for
-     * @return the user with matching email
+     * @param email email a buscar
+     * @return usuario con email coincidente
      */
     Usuario buscarPorEmail(String email);
-    
+
     /**
-     * Get all users
-     * @return list of all users
+     * @return lista de todos los usuarios
      */
     List<Usuario> obtenerTodos();
-    
+
     /**
-     * Save a user
-     * @param usuario the user to save
-     * @return the saved user
+     * @param usuario usuario a guardar
+     * @return usuario guardado
      */
     Usuario guardar(Usuario usuario);
-    
+
     /**
-     * Delete a user
-     * @param id the ID of the user to delete
+     * @param id identificador del usuario a eliminar
      */
     void eliminar(Long id);
-    
+
     /**
-     * Update a user
-     * @param id the ID of the user to update
-     * @param usuario the updated user data
-     * @return the updated user
+     * @param id identificador del usuario a actualizar
+     * @param usuario datos actualizados del usuario
+     * @return usuario actualizado
      */
     Usuario actualizar(Long id, Usuario usuario);
 }
