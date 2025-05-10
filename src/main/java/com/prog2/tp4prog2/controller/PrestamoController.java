@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controlador REST para gestionar operaciones CRUD sobre préstamos.
+ * Proporciona endpoints para crear, leer, actualizar y eliminar préstamos,
+ * así como para consultar préstamos por usuario, libro, y estado (activos/vencidos).
+ */
 @RestController
 @RequestMapping("/api/prestamos")
 public class PrestamoController {
@@ -27,21 +32,43 @@ public class PrestamoController {
         this.usuarioService = usuarioService;
     }
 
+    /**
+     * Obtiene todos los préstamos registrados en el sistema.
+     * 
+     * @return ResponseEntity con la lista de todos los préstamos y código de estado 200 (OK)
+     */
     @GetMapping
     public ResponseEntity<List<Prestamo>> obtenerTodos() {
         return ResponseEntity.ok(prestamoService.obtenerTodos());
     }
 
+    /**
+     * Obtiene todos los préstamos activos (con fecha de devolución posterior a la fecha actual).
+     * 
+     * @return ResponseEntity con la lista de préstamos activos y código de estado 200 (OK)
+     */
     @GetMapping("/activos")
     public ResponseEntity<List<Prestamo>> obtenerPrestamosActivos() {
         return ResponseEntity.ok(prestamoService.buscarPrestamosActivos());
     }
 
+    /**
+     * Obtiene todos los préstamos vencidos (con fecha de devolución anterior a la fecha actual).
+     * 
+     * @return ResponseEntity con la lista de préstamos vencidos y código de estado 200 (OK)
+     */
     @GetMapping("/vencidos")
     public ResponseEntity<List<Prestamo>> obtenerPrestamosVencidos() {
         return ResponseEntity.ok(prestamoService.buscarPrestamosVencidos());
     }
 
+    /**
+     * Obtiene todos los préstamos asociados a un usuario específico.
+     * 
+     * @param usuarioId El identificador único del usuario
+     * @return ResponseEntity con la lista de préstamos del usuario y código de estado 200 (OK),
+     *         o código 404 (Not Found) si el usuario no existe
+     */
     @GetMapping("/usuario/{usuarioId}")
     public ResponseEntity<List<Prestamo>> obtenerPrestamosPorUsuario(@PathVariable Long usuarioId) {
         try {
@@ -52,6 +79,13 @@ public class PrestamoController {
         }
     }
 
+    /**
+     * Obtiene todos los préstamos asociados a un libro específico.
+     * 
+     * @param libroId El identificador único del libro
+     * @return ResponseEntity con la lista de préstamos del libro y código de estado 200 (OK),
+     *         o código 404 (Not Found) si el libro no existe
+     */
     @GetMapping("/libro/{libroId}")
     public ResponseEntity<List<Prestamo>> obtenerPrestamosPorLibro(@PathVariable Long libroId) {
         try {
@@ -62,12 +96,26 @@ public class PrestamoController {
         }
     }
 
+    /**
+     * Crea un nuevo préstamo en el sistema.
+     * 
+     * @param prestamo El objeto Prestamo con los datos a guardar
+     * @return ResponseEntity con el préstamo creado y código de estado 201 (Created)
+     */
     @PostMapping
     public ResponseEntity<Prestamo> crear(@RequestBody Prestamo prestamo) {
         Prestamo nuevoPrestamo = prestamoService.guardar(prestamo);
         return new ResponseEntity<>(nuevoPrestamo, HttpStatus.CREATED);
     }
 
+    /**
+     * Actualiza un préstamo existente identificado por su ID.
+     * 
+     * @param id El identificador único del préstamo a actualizar
+     * @param prestamo El objeto Prestamo con los datos actualizados
+     * @return ResponseEntity con el préstamo actualizado y código de estado 200 (OK),
+     *         o código 404 (Not Found) si no existe
+     */
     @PutMapping("/{id}")
     public ResponseEntity<Prestamo> actualizar(@PathVariable Long id, @RequestBody Prestamo prestamo) {
         try {
@@ -78,6 +126,13 @@ public class PrestamoController {
         }
     }
 
+    /**
+     * Elimina un préstamo existente identificado por su ID.
+     * 
+     * @param id El identificador único del préstamo a eliminar
+     * @return ResponseEntity con código de estado 204 (No Content) si se eliminó correctamente,
+     *         o código 404 (Not Found) si no existe
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         try {
