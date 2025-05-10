@@ -14,6 +14,12 @@ public interface LibroService {
     Libro buscarPorIsbn(String isbn);
 
     /**
+     * @param id ID a buscar
+     * @return libro con ID coincidente
+     */
+    Libro buscarPorId(Long id);
+
+    /**
      * @return lista de todos los libros
      */
     List<Libro> obtenerTodos();
@@ -30,9 +36,9 @@ public interface LibroService {
     void eliminar(Long id);
 
     /**
-     * @param id identificador del libro a actualizar
+     * @param id identificador del libro a buscar y actualizar
      * @param libro datos actualizados del libro
      * @return libro actualizado
      */
-    Libro actualizar(Long id, Libro libro);
+    Libro buscarYActualizar(Long id, Libro libro);
 }

@@ -11,6 +11,12 @@ import java.util.List;
  */
 public interface PrestamoService {
     /**
+     * @param id ID a buscar
+     * @return préstamo con ID coincidente
+     */
+    Prestamo buscarPorId(Long id);
+
+    /**
      * @return lista de todos los préstamos
      */
     List<Prestamo> obtenerTodos();
@@ -49,9 +55,9 @@ public interface PrestamoService {
     void eliminar(Long id);
 
     /**
-     * @param id identificador del préstamo a actualizar
+     * @param id identificador del préstamo a buscar y actualizar
      * @param prestamo datos actualizados del préstamo
      * @return préstamo actualizado
      */
-    Prestamo actualizar(Long id, Prestamo prestamo);
+    Prestamo buscarYActualizar(Long id, Prestamo prestamo);
 }

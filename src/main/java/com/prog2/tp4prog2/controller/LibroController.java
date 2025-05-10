@@ -27,7 +27,7 @@ public class LibroController {
     @GetMapping("/{id}")
     public ResponseEntity<Libro> obtenerPorId(@PathVariable Long id) {
         try {
-            Libro libro = libroService.buscarPorIsbn(id.toString());
+            Libro libro = libroService.buscarPorId(id);
             return ResponseEntity.ok(libro);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
@@ -53,7 +53,7 @@ public class LibroController {
     @PutMapping("/{id}")
     public ResponseEntity<Libro> actualizar(@PathVariable Long id, @RequestBody Libro libro) {
         try {
-            Libro libroActualizado = libroService.actualizar(id, libro);
+            Libro libroActualizado = libroService.buscarYActualizar(id, libro);
             return ResponseEntity.ok(libroActualizado);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
