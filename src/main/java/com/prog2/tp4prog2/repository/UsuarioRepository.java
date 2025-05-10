@@ -4,55 +4,45 @@ import com.prog2.tp4prog2.model.Usuario;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Repository interface for Usuario entity
- */
 public interface UsuarioRepository {
-    
+
     /**
-     * Find all users
-     * @return list of all users
+     * @return lista de todos los usuarios
      */
     List<Usuario> findAll();
-    
+
     /**
-     * Find a user by its ID
-     * @param id the user ID
-     * @return the user if found
+     * @param id identificador del usuario
+     * @return el usuario si se encuentra
      */
     Optional<Usuario> findById(Long id);
-    
+
     /**
-     * Save a user
-     * @param usuario the user to save
-     * @return the saved user
+     * @param usuario el usuario a guardar
+     * @return el usuario guardado
      */
     Usuario save(Usuario usuario);
-    
+
     /**
-     * Delete a user
-     * @param id the ID of the user to delete
+     * @param id identificador del usuario a eliminar
      */
     void deleteById(Long id);
-    
+
     /**
-     * Find users by name
-     * @param nombre the name to search for
-     * @return list of users with matching name
+     * @param nombre nombre a buscar
+     * @return lista de usuarios con nombre coincidente
      */
     List<Usuario> findByNombre(String nombre);
-    
+
     /**
-     * Find a user by email
-     * @param email the email to search for
-     * @return the user with matching email
+     * @param email email a buscar
+     * @return usuario con email coincidente
      */
     Optional<Usuario> findByEmail(String email);
-    
+
     /**
-     * Find users by status
-     * @param estado the status to search for
-     * @return list of users with matching status
+     * @param estado estado a buscar
+     * @return lista de usuarios con estado coincidente
      */
     List<Usuario> findByEstado(String estado);
 }

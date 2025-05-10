@@ -7,59 +7,51 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Service interface for Prestamo entity
+ * Interfaz de servicio para la entidad Prestamo
  */
 public interface PrestamoService {
     /**
-     * Get all loans
-     * @return list of all loans
+     * @return lista de todos los préstamos
      */
     List<Prestamo> obtenerTodos();
-    
+
     /**
-     * Find loans by user
-     * @param usuario the user to search for
-     * @return list of loans for the specified user
+     * @param usuario usuario a buscar
+     * @return lista de préstamos del usuario
      */
     List<Prestamo> buscarPorUsuario(Usuario usuario);
-    
+
     /**
-     * Find loans by book
-     * @param libro the book to search for
-     * @return list of loans for the specified book
+     * @param libro libro a buscar
+     * @return lista de préstamos del libro
      */
     List<Prestamo> buscarPorLibro(Libro libro);
-    
+
     /**
-     * Find active loans (loans where the return date is after the current date)
-     * @return list of active loans
+     * @return lista de préstamos activos (fecha de devolución posterior a hoy)
      */
     List<Prestamo> buscarPrestamosActivos();
-    
+
     /**
-     * Find overdue loans (loans where the return date is before the current date)
-     * @return list of overdue loans
+     * @return lista de préstamos vencidos (fecha de devolución anterior a hoy)
      */
     List<Prestamo> buscarPrestamosVencidos();
-    
+
     /**
-     * Save a loan
-     * @param prestamo the loan to save
-     * @return the saved loan
+     * @param prestamo préstamo a guardar
+     * @return préstamo guardado
      */
     Prestamo guardar(Prestamo prestamo);
-    
+
     /**
-     * Delete a loan
-     * @param id the ID of the loan to delete
+     * @param id identificador del préstamo a eliminar
      */
     void eliminar(Long id);
-    
+
     /**
-     * Update a loan
-     * @param id the ID of the loan to update
-     * @param prestamo the updated loan data
-     * @return the updated loan
+     * @param id identificador del préstamo a actualizar
+     * @param prestamo datos actualizados del préstamo
+     * @return préstamo actualizado
      */
     Prestamo actualizar(Long id, Prestamo prestamo);
 }
