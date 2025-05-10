@@ -119,8 +119,8 @@ Desarrollar un sistema de gestión de biblioteca utilizando Spring Framework, im
 > 💡 **Nota**: Esta estimación considera la experiencia adquirida en trabajos anteriores y la complejidad de implementar una arquitectura en capas con Spring Framework. El tiempo se ha ajustado considerando que no se requiere implementación de persistencia real.
 
 ## 👨‍🎓 Información del Alumno
-- **Nombre y Apellido**: [Nombre y Apellido del Alumno]
-- **Legajo**: [Número de Legajo]
+- **Nombre y Apellido**: Dino Meschini
+- **Legajo**: 62323
 
 ## 📋 Requisitos Previos
 
@@ -220,7 +220,7 @@ public interface LibroRepository {
 public class LibroRepositoryImpl implements LibroRepository {
     private final Map<Long, Libro> libros = new HashMap<>();
     private Long nextId = 1L;
-    
+
     @Override
     public Libro save(Libro libro) {
         if (libro.getId() == null) {
@@ -229,29 +229,29 @@ public class LibroRepositoryImpl implements LibroRepository {
         libros.put(libro.getId(), libro);
         return libro;
     }
-    
+
     @Override
     public Optional<Libro> findById(Long id) {
         return Optional.ofNullable(libros.get(id));
     }
-    
+
     @Override
     public Optional<Libro> findByIsbn(String isbn) {
         return libros.values().stream()
             .filter(libro -> libro.getIsbn().equals(isbn))
             .findFirst();
     }
-    
+
     @Override
     public List<Libro> findAll() {
         return new ArrayList<>(libros.values());
     }
-    
+
     @Override
     public void deleteById(Long id) {
         libros.remove(id);
     }
-    
+
     @Override
     public boolean existsById(Long id) {
         return libros.containsKey(id);
@@ -271,32 +271,32 @@ public interface LibroService {
 @Service
 public class LibroServiceImpl implements LibroService {
     private final LibroRepository libroRepository;
-    
+
     public LibroServiceImpl(LibroRepository libroRepository) {
         this.libroRepository = libroRepository;
     }
-    
+
     @Override
     public Libro buscarPorIsbn(String isbn) {
         return libroRepository.findByIsbn(isbn)
             .orElseThrow(() -> new LibroNoEncontradoException(isbn));
     }
-    
+
     @Override
     public List<Libro> obtenerTodos() {
         return libroRepository.findAll();
     }
-    
+
     @Override
     public Libro guardar(Libro libro) {
         return libroRepository.save(libro);
     }
-    
+
     @Override
     public void eliminar(Long id) {
         libroRepository.deleteById(id);
     }
-    
+
     @Override
     public Libro actualizar(Long id, Libro libro) {
         if (!libroRepository.existsById(id)) {
@@ -334,31 +334,31 @@ public class LibroServiceImpl implements LibroService {
 @RequestMapping("/api/libros")
 public class LibroController {
     private final LibroService libroService;
-    
+
     public LibroController(LibroService libroService) {
         this.libroService = libroService;
     }
-    
+
     @GetMapping
     public List<Libro> obtenerTodos() {
         return libroService.obtenerTodos();
     }
-    
+
     @GetMapping("/{id}")
     public Libro obtenerPorId(@PathVariable Long id) {
         return libroService.buscarPorId(id);
     }
-    
+
     @PostMapping
     public Libro crear(@RequestBody Libro libro) {
         return libroService.guardar(libro);
     }
-    
+
     @PutMapping("/{id}")
     public Libro actualizar(@PathVariable Long id, @RequestBody Libro libro) {
         return libroService.actualizar(id, libro);
     }
-    
+
     @DeleteMapping("/{id}")
     public void eliminar(@PathVariable Long id) {
         libroService.eliminar(id);
@@ -390,32 +390,32 @@ public class LibroController {
 class LibroServiceImplTest {
     @Mock
     private LibroRepository libroRepository;
-    
+
     @InjectMocks
     private LibroServiceImpl libroService;
-    
+
     @Test
     void cuandoBuscarPorIsbnExiste_entoncesRetornaLibro() {
         // Arrange
         String isbn = "123-456-789";
         Libro libroEsperado = new Libro(1L, isbn, "Test Book", "Test Author", EstadoLibro.DISPONIBLE);
         when(libroRepository.findByIsbn(isbn)).thenReturn(Optional.of(libroEsperado));
-        
+
         // Act
         Libro resultado = libroService.buscarPorIsbn(isbn);
-        
+
         // Assert
         assertNotNull(resultado);
         assertEquals(isbn, resultado.getIsbn());
         verify(libroRepository).findByIsbn(isbn);
     }
-    
+
     @Test
     void cuandoBuscarPorIsbnNoExiste_entoncesLanzaExcepcion() {
         // Arrange
         String isbn = "123-456-789";
         when(libroRepository.findByIsbn(isbn)).thenReturn(Optional.empty());
-        
+
         // Act & Assert
         assertThrows(LibroNoEncontradoException.class, () -> 
             libroService.buscarPorIsbn(isbn)
@@ -535,3 +535,267 @@ El uso de Inteligencia Artificial (IA) en este trabajo práctico debe seguir las
 ## 📝 Licencia
 
 Este trabajo es parte del curso de Programación II de Ingeniería en Informática. Uso educativo únicamente.
+
+---
+
+# Documentación del Proyecto
+
+## 📋 Descripción General
+
+Este proyecto implementa un sistema de gestión de biblioteca utilizando Spring Boot. El sistema permite administrar libros, usuarios y préstamos a través de una API REST. La persistencia de datos se realiza en memoria utilizando colecciones de Java.
+
+## 🚀 Instrucciones de Instalación y Ejecución
+
+### Requisitos Previos
+- Java 21 o superior
+- Maven 3.9.0 o superior
+
+### Pasos para Ejecutar el Proyecto
+
+1. **Clonar el repositorio**
+   ```bash
+   git clone https://github.com/tu-usuario/tp4prog2.git
+   cd tp4prog2
+   ```
+
+2. **Compilar el proyecto**
+   ```bash
+   mvn clean package
+   ```
+
+3. **Ejecutar la aplicación**
+   ```bash
+   java -jar target/tp4prog2-0.0.1-SNAPSHOT.jar
+   ```
+
+   Alternativamente, puedes ejecutar la aplicación con Maven:
+   ```bash
+   mvn spring-boot:run
+   ```
+
+4. **Acceder a la API**
+   La API estará disponible en `http://localhost:8080`
+
+## 📚 Arquitectura y Decisiones de Diseño
+
+### Arquitectura en Capas
+
+El proyecto sigue una arquitectura en capas tradicional:
+
+1. **Capa de Controladores (Controllers)**
+   - Maneja las peticiones HTTP
+   - Implementa los endpoints REST
+   - Convierte entre DTOs y modelos de dominio
+   - Gestiona respuestas HTTP y códigos de estado
+
+2. **Capa de Servicios (Services)**
+   - Contiene la lógica de negocio
+   - Implementa validaciones y reglas de negocio
+   - Coordina operaciones entre repositorios
+   - Proporciona abstracción entre controladores y repositorios
+
+3. **Capa de Repositorios (Repositories)**
+   - Gestiona la persistencia de datos
+   - Implementa operaciones CRUD
+   - Proporciona métodos de búsqueda específicos
+   - Abstrae los detalles de almacenamiento
+
+### Patrones de Diseño Utilizados
+
+1. **Inyección de Dependencias**
+   - Uso de Spring IoC para gestionar dependencias
+   - Acoplamiento débil entre componentes
+   - Facilita el testing mediante mocks
+
+2. **Repository Pattern**
+   - Abstracción de la capa de persistencia
+   - Interfaces bien definidas para operaciones CRUD
+   - Implementaciones intercambiables
+
+3. **Service Layer Pattern**
+   - Encapsulación de la lógica de negocio
+   - Separación clara de responsabilidades
+   - Reutilización de código
+
+4. **MVC (Model-View-Controller)**
+   - Separación de la lógica de presentación, negocio y datos
+   - Controladores REST como punto de entrada
+   - Modelos como representación de datos
+
+### Decisiones de Diseño
+
+1. **Persistencia en Memoria**
+   - Se utiliza `HashMap` para almacenar entidades en memoria
+   - Simplifica la implementación para fines educativos
+   - Fácil de reemplazar por una base de datos real en el futuro
+
+2. **Manejo de Excepciones**
+   - Uso de excepciones personalizadas para casos de negocio
+   - Conversión a códigos HTTP apropiados en los controladores
+   - Mensajes de error descriptivos
+
+3. **Validaciones**
+   - Validaciones en la capa de servicio
+   - Verificación de existencia de entidades antes de operaciones
+   - Manejo de casos borde (null, duplicados, etc.)
+
+## 📘 Documentación de la API
+
+### Endpoints de Libros
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/libros` | Obtiene todos los libros disponibles |
+| GET | `/api/libros/{id}` | Obtiene un libro por su ID |
+| GET | `/api/libros/isbn/{isbn}` | Obtiene un libro por su ISBN |
+| POST | `/api/libros` | Crea un nuevo libro |
+| PUT | `/api/libros/{id}` | Actualiza un libro existente |
+| DELETE | `/api/libros/{id}` | Elimina un libro |
+
+### Endpoints de Usuarios
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/usuarios` | Obtiene todos los usuarios registrados |
+| GET | `/api/usuarios/{id}` | Obtiene un usuario por su ID |
+| GET | `/api/usuarios/email/{email}` | Obtiene un usuario por su email |
+| POST | `/api/usuarios` | Crea un nuevo usuario |
+| PUT | `/api/usuarios/{id}` | Actualiza un usuario existente |
+| DELETE | `/api/usuarios/{id}` | Elimina un usuario |
+
+### Endpoints de Préstamos
+
+| Método | Endpoint | Descripción |
+|--------|----------|-------------|
+| GET | `/api/prestamos` | Obtiene todos los préstamos |
+| GET | `/api/prestamos/activos` | Obtiene los préstamos activos |
+| GET | `/api/prestamos/vencidos` | Obtiene los préstamos vencidos |
+| GET | `/api/prestamos/usuario/{usuarioId}` | Obtiene préstamos por usuario |
+| GET | `/api/prestamos/libro/{libroId}` | Obtiene préstamos por libro |
+| POST | `/api/prestamos` | Crea un nuevo préstamo |
+| PUT | `/api/prestamos/{id}` | Actualiza un préstamo existente |
+| DELETE | `/api/prestamos/{id}` | Elimina un préstamo |
+
+## 📝 Ejemplos de Uso
+
+### Crear un Nuevo Libro
+
+**Request:**
+```http
+POST /api/libros
+Content-Type: application/json
+
+{
+  "isbn": "9788498387087",
+  "titulo": "Cien años de soledad",
+  "autor": "Gabriel García Márquez",
+  "estado": "Disponible"
+}
+```
+
+**Response:**
+```json
+{
+  "id": 1,
+  "isbn": "9788498387087",
+  "titulo": "Cien años de soledad",
+  "autor": "Gabriel García Márquez",
+  "estado": "Disponible"
+}
+```
+
+### Crear un Usuario
+
+**Request:**
+```http
+POST /api/usuarios
+Content-Type: application/json
+
+{
+  "nombre": "Juan Pérez",
+  "email": "juan.perez@example.com",
+  "estado": "Activo"
+}
+```
+
+**Response:**
+```json
+{
+  "id": 1,
+  "nombre": "Juan Pérez",
+  "email": "juan.perez@example.com",
+  "estado": "Activo"
+}
+```
+
+### Crear un Préstamo
+
+**Request:**
+```http
+POST /api/prestamos
+Content-Type: application/json
+
+{
+  "libro": {
+    "id": 1
+  },
+  "usuario": {
+    "id": 1
+  },
+  "fechaPrestamo": "2023-05-01",
+  "fechaDevolucion": "2023-05-15"
+}
+```
+
+**Response:**
+```json
+{
+  "id": 1,
+  "libro": {
+    "id": 1,
+    "isbn": "9788498387087",
+    "titulo": "Cien años de soledad",
+    "autor": "Gabriel García Márquez",
+    "estado": "Prestado"
+  },
+  "usuario": {
+    "id": 1,
+    "nombre": "Juan Pérez",
+    "email": "juan.perez@example.com",
+    "estado": "Activo"
+  },
+  "fechaPrestamo": "2023-05-01",
+  "fechaDevolucion": "2023-05-15"
+}
+```
+
+### Obtener Préstamos Activos
+
+**Request:**
+```http
+GET /api/prestamos/activos
+```
+
+**Response:**
+```json
+[
+  {
+    "id": 1,
+    "libro": {
+      "id": 1,
+      "isbn": "9788498387087",
+      "titulo": "Cien años de soledad",
+      "autor": "Gabriel García Márquez",
+      "estado": "Prestado"
+    },
+    "usuario": {
+      "id": 1,
+      "nombre": "Juan Pérez",
+      "email": "juan.perez@example.com",
+      "estado": "Activo"
+    },
+    "fechaPrestamo": "2023-05-01",
+    "fechaDevolucion": "2023-05-15"
+  }
+]
+```
